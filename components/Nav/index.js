@@ -3,25 +3,30 @@ import { getStockInfo } from '../../lib/api/stocks'
 import { useRouter } from 'next/router'
 import styles from './index.module.scss'
 import Swal from 'sweetalert2'
+import { useEffect, useState } from 'react'
 
 function Navbar1 () {
+  const [input , setInput] = useState('')
+
   const inputValue = useSelector(state => state.SearchReducer)
-  const allStocks = useSelector(state => state.stocksReducer)
+  const allStocks = useSelector(state => state.getTtlStocksReducer)
   const dispatch = useDispatch()
   const router = useRouter()
-  const con = useSelector(state => state.stockInfoReducer)
+
 
   const handleChange = e => {
-    dispatch(inputChange(e.target.value))
+    const value = e.target.value
+    if (/^\d*$/.test(value)) {
+      setInput(value)
+    }
   }
 
   const handleClick = () => {
-    if (allStocks.find(s => s.stock_id === inputValue)) {
-      const info = allStocks.filter(s => s.stock_id === inputValue)
-      dispatch(stockInfo(info[0]))
+    const found = allStocks.find(s => s.stock_id === input)
+    if (found) {
       router.push({
         pathname: '/stock',
-        query: { id: inputValue }
+        query: { id: input , name: found.stock_name}
       })
     } else {
       Swal.fire({
@@ -30,10 +35,12 @@ function Navbar1 () {
         text: '查無此股票代號!'
       })
     }
-
-    dispatch(inputChange(''))
-    inputValue = ''
+    setInput('')
   }
+
+  useEffect(() => {
+    console.log(allStocks)
+  },[])
 
   const { navbar } = styles
 
@@ -51,7 +58,7 @@ function Navbar1 () {
             type='search'
             placeholder='股票代號'
             aria-label='Search'
-            value={inputValue}
+            value={input}
             onChange={handleChange}
           />
           <button

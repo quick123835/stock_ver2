@@ -7,8 +7,11 @@ import { getTotalStocks , getTtlCategories } from '../lib/redux/actions/actions'
 const Home = () => {
   const [loading, setLoading] = useState(true)
   const [categories , setCategories] = useState({})
+  const [stocks , setStocks] = useState([])
   // const inputValue = useSelector(state => state.SearchReducer)
   const dispatch = useDispatch()
+
+  const allStocks = useSelector(state => state.getTtlStocksReducer)
 
   const getAllStocksAsync = async () => {
     try {
@@ -17,7 +20,12 @@ const Home = () => {
       // 刪除基金及重複的
       const filterData = data.filter(item => item.industry_category !== 'ETF' && item.industry_category!=='Index' && item.industry_category!=='上櫃指數股票型基金(ETF)' && item.industry_category!=='ETN' && item.industry_category!=='指數投資證券(ETN)' && item.industry_category!=='受益證券')
       let uniqueArray = Array.from(new Map(filterData.map(item => [item.stock_id, item])).values())
-      dispatch(getTotalStocks(uniqueArray))
+      try {
+        dispatch(getTotalStocks(uniqueArray));
+      } catch (error) {
+        console.error('Dispatch failed:', error);
+      }
+      setStocks(uniqueArray)
       
       // 取出類別
       const categories = uniqueArray.reduce((accumulator, item) => {
@@ -34,7 +42,11 @@ const Home = () => {
   }
 
   useEffect(() => {
-    getAllStocksAsync()
+    if(allStocks){
+      setLoading(false)
+    }else{
+      getAllStocksAsync()
+    }
   }, [])
 
   // useEffect(() => {
@@ -57,6 +69,8 @@ const Home = () => {
         <CategoriesList 
           categories={ttlCategories}
           ttlStocks={ttlStocks}
+          stocks={stocks}
+        
         />
       )}
       

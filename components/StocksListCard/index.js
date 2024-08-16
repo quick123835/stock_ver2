@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 const StocksListCard = ({ stocksList, cardOnClick }) => {
-  const { listContainer, card, cardInfo, cardName, stockId, paginator } = styles
+  // const { listContainer, card, cardInfo, cardName, stockId, paginator } = styles
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 24
 
@@ -16,19 +16,19 @@ const StocksListCard = ({ stocksList, cardOnClick }) => {
 
   return (
     <>
-      <div className={listContainer}>
+      <div className=''>
         {currentPageData.map((item, index) => (
           <Link href={`/stock/?id=${item.stock_id}`} key={index}>
-            <div className={card} onClick={() => cardOnClick?.(item)}>
-              <div className={cardName}>{item.stock_name}</div>
-              <div className={cardInfo}>
-                <span className={stockId}>代號: {item.stock_id}</span>
+            <div className='' onClick={() => cardOnClick?.(item)}>
+              <div className=''>{item.stock_name}</div>
+              <div className=''>
+                <span className=''>代號: {item.stock_id}</span>
               </div>
             </div>
           </Link>
         ))}
       </div>
-      <div className={paginator}>
+      <div className=''>
         <button
           disabled={currentPage === 1}
           onClick={() => setCurrentPage(currentPage - 1)}
