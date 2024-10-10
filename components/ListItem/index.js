@@ -36,8 +36,8 @@ const ListItem = ({item , stocks , onStockClick }) => {
             const formattedDate = `${year}/${month}/${day}`
             const roundedNumber = Number(item.pressure[1]).toFixed(4)
             return (
-                <div className={`w-[180px] h-[100px] border-2 rounded-md flex flex-col justify-center items-center hover:bg-gray-200 cursor-pointer ${roundedNumber > 0.6 && 'red'}`} onClick={() => {onStockClick?.(item.id , item.name)}}>
-                    <div className='text=[20px]'>{item.name}</div>
+                <div className={`${card} ${ roundedNumber <= 0.6 && red} `} onClick={() => {onStockClick?.(item.id , item.name)}}>
+                    <div className={cardName}>{item.name}</div>
                     <div>代碼: {item.id}</div>
                     <div>時間: {formattedDate}</div>
                     <div>力道: {roundedNumber}</div>
