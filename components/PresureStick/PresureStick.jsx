@@ -29,24 +29,26 @@ const PresureStick = ({ stockDetail, stockName, stockId , stockInfo }) => {
       vol.push(stockDetail[i].Trading_Volume)
       date.push(stockDetail[i].date)
       // 買盤1
-      buyPlate1.push(Math.abs(stockDetail[i].open - stockDetail[i - 1].close))
+      buyPlate1.push(Math.abs(stockDetail[i].max - stockDetail[i].open))
       // 買盤2
-      buyPlate2.push(Math.abs(stockDetail[i].max - stockDetail[i].min))
+      buyPlate2.push(Math.abs(stockDetail[i].close - stockDetail[i].min))
       // 賣盤1
-      salePlate1.push(Math.abs(stockDetail[i].open - stockDetail[i].min))
+      salePlate1.push(Math.abs(stockDetail[i - 1].close - stockDetail[i].open))
       // 賣盤2
-      salePlate2.push(Math.abs(stockDetail[i].max - stockDetail[i].close))
+      salePlate2.push(Math.abs(stockDetail[i].max - stockDetail[i].min))
+      
     } else {
       date.push(stockDetail[i].date)
       vol.push(stockDetail[i].Trading_Volume)
 
-      buyPlate1.push(Math.abs(stockDetail[i].max - stockDetail[i].open))
+      
+      buyPlate1.push(Math.abs(stockDetail[i].open - stockDetail[i - 1].close))
 
-      buyPlate2.push(Math.abs(stockDetail[i].close - stockDetail[i].min))
+      buyPlate2.push(Math.abs(stockDetail[i].max - stockDetail[i].min))
 
-      salePlate1.push(Math.abs(stockDetail[i - 1].close - stockDetail[i].open))
+      salePlate1.push(Math.abs(stockDetail[i].open - stockDetail[i].min))
 
-      salePlate2.push(Math.abs(stockDetail[i - 1].max - stockDetail[i].min))
+      salePlate2.push(Math.abs(stockDetail[i].max - stockDetail[i].close))
     }
   }
   //   console.log(date)
